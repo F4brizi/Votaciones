@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Token {
+  id        String   @id @default(uuid())
+  code      String   @unique // El código que se le da al usuario
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  // No hay relación con Token ni con User para anonimato
+  ranking   String   // JSON stringified ranking: { "S": ["id1"], "A": ["id2", "id3"] }
+  createdAt DateTime @default(now())
+}
